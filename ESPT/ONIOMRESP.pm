@@ -319,7 +319,7 @@ sub modeone {
         }
 
         # Count total step number in given log file
-        if ((/^\s*Z-Matrix\s+orientation:/i) || (/^\s*Standard\s+orientation:/) || (/^\s*Input\s+orientation:/)) {
+        if ((/^\s*Z-Matrix\s+orientation:/i) || (/^\s*Standard\s+orientation:/i) || (/^\s*Input\s+orientation:/i) || (/^\s*Input\s+orientation:/i)) {
                $totalSteps++;
               }
 
@@ -353,7 +353,7 @@ sub modeone {
     }
 
 # If NAtoms information is not available, we need to find it by
-# counting in Input orientation.
+# counting in standard orientation.
 
    if ( $NAtoms == 0 ) {
       print "NAtoms info is not presented in $gfile. \n\nTrying to find number of atoms in another way...\n\n" if $debug >= 0;
@@ -362,7 +362,7 @@ sub modeone {
 
       while (<LOGFILE>){
 
-           if ((/^\s*Z-Matrix\s+orientation:/i) || (/^\s*Standard\s+orientation:/) || (/^\s*Input\s+orientation:/)) {
+           if ((/^\s*Z-Matrix\s+orientation:/i) || (/^\s*Standard\s+orientation:/i) || (/^\s*Input\s+orientation:/i)) {
 
                $_ = <LOGFILE>;
                if ( not(/^\s+-+/)) {
@@ -419,7 +419,7 @@ sub modeone {
     }
 
    if ( $stepnum > 1 ) {
-     print "\n The actual step number ",$stepnum-1,", geometry after number $stepnum Z-Matrix orientation or Input orientation is used.\n" if $debug >= 2;
+     print "\n The actual step number ",$stepnum-1,", geometry after number $stepnum Z-Matrix orientation or Standard orientation is used.\n" if $debug >= 2;
     } else {
      print "\nGiven file $gfile has only one geometry, and may not be an optimization file.\n\n" if $debug >= 2;
     }
@@ -668,7 +668,7 @@ sub modeone {
     }  #M1NO2
 
    # Locate the desired geometries
-   if ( (/^\s*Z-Matrix\s+orientation:/i) || (/^\s*Standard\s+orientation:/) || (/^\s*Input\s+orientation:/) ) { #M1NO7
+   if ( (/^\s*Z-Matrix\s+orientation:/i) || (/^\s*Standard\s+orientation:/i) || (/^\s*Input\s+orientation:/i) ) { #M1NO7
       $stepcounter++;
 
       if ( $stepcounter != $stepnum ) {
@@ -779,9 +779,7 @@ sub modeone {
   open(OUTPUTFILE,">$outputfile") || die "Could not write $outputfile\n$!\n";
 
   print  OUTPUTFILE "%chk=$outputfile.chk\n";
-  print  OUTPUTFILE "%mem=40GB\n";
-  print  OUTPUTFILE "%nprocshared=24\n";
-  print  OUTPUTFILE "#p HF/6-31g(d) iop(6/33=2,6/42=6) pop=mk sp test scf=(xqc,tight)\n\n";
+  print  OUTPUTFILE "#p hf/6-31g(d) iop(6/33=2) pop=mk sp test scf=(xqc,tight)\n\n";
   print  OUTPUTFILE "Gaussian Calc for RESP fitting based on $gfile\n";
 
   if ( $is_twolayer == 1 ) {
@@ -1398,7 +1396,7 @@ sub modetwo {
     }
 
 # If NAtoms information is not available, we need to find it by
-# counting in Input orientation.
+# counting in standard orientation.
 
    if ( $NAtoms == 0 ) {
       print "NAtoms info is not presented in $gfile. \n\nTrying to find number of atoms in another way...\n\n" if $debug >= 0;
@@ -1407,7 +1405,7 @@ sub modetwo {
 
       while (<LOGFILE>){
 
-           if ((/^\s*Z-Matrix\s+orientation:/i) || (/^\s*Standard\s+orientation:/) || (/^\s*Input\s+orientation:/)) {
+           if ((/^\s*Z-Matrix\s+orientation:/i) || (/^\s*Standard\s+orientation:/i) || (/^\s*Input\s+orientation:/i)) {
 
                $_ = <LOGFILE>;
                if ( not(/^\s+-+/)) {
@@ -1458,7 +1456,7 @@ sub modetwo {
 
       while (<LOGFILE>){
 
-           if ((/^\s*Z-Matrix\s+orientation:/i) || (/^\s*Standard\s+orientation:/) || (/^\s*Input\s+orientation:/)) { #NO5
+           if ((/^\s*Z-Matrix\s+orientation:/i) || (/^\s*Standard\s+orientation:/i) || (/^\s*Input\s+orientation:/i)) { #NO5
 
                $_ = <LOGFILE>;
                if ( not(/^\s+-+/)) {
