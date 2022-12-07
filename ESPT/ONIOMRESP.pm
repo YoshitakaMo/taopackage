@@ -989,8 +989,8 @@ sub modeone {
      open(OUTPUTFILE,">$outputfile") || die "Could not write $outputfile\n$!\n";
 
      print  OUTPUTFILE "%chk=$outputfile.chk\n";
-     print  OUTPUTFILE "%mem=2000MB\n";
-     print  OUTPUTFILE "%nprocshared=2\n";
+     print  OUTPUTFILE "%mem=60GB\n";
+     print  OUTPUTFILE "%nprocshared=16\n";
      print  OUTPUTFILE "#p hf/6-31g(d) iop(6/33=2) pop=mk sp test scf=(xqc,tight)\n\n";
      print  OUTPUTFILE "Gaussian Calc for RESP fitting based on $gfile\n";
      print  OUTPUTFILE "Atoms are extracted using atom list file $AtomListFile.\n";

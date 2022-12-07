@@ -19,14 +19,14 @@ AMBERFF package.
 
 =head1 IMPORTANT
 
- For ONIOM calculation with protein, you may need connectivity 
- information. However, this program cannot generate those information. 
+ For ONIOM calculation with protein, you may need connectivity
+ information. However, this program cannot generate those information.
 
 =cut
 
 =head1 NOTICE
 
-Besides .gjf file, there is also one .onb file as output. This file contains the 
+Besides .gjf file, there is also one .onb file as output. This file contains the
 original residue and atom type information. These information might be useful
 when coding up ONIOM layer selection part.
 
@@ -49,8 +49,8 @@ our $VERSION = '0.04';
 ### Version History ###
 # 0.01	digest pdb file
 # 0.02  Deal with atom name starting with number in PDB file. eg "1HH1"
-# 0.03  Deal with freeze flag (0 or -1) within certain distance of core residues 
-# 0.04  Abstract part of structure within certain distance of core residues 
+# 0.03  Deal with freeze flag (0 or -1) within certain distance of core residues
+# 0.04  Abstract part of structure within certain distance of core residues
 
 ### To Do List ###
 
@@ -86,7 +86,7 @@ sub new {
         $pdb->{ATOMFREEZEFLAG} = [];
         $pdb->{ATOMINRESIDUE} = [];
         $pdb->{ORIGINALLINE} = [];
-        
+
 	# These variables are related to core residues set up
         $pdb->{CORERESIDUE} = [];
         $pdb->{CORERESIDUENAME} = [];
@@ -95,11 +95,11 @@ sub new {
         $pdb->{NEAR} = undef;
         $pdb->{CORESET} = undef;
         $pdb->{RESIDUENEARCORE} = undef;
-        
+
         # These variables are list of core atoms
         $pdb->{COREATOMSID} = [];
         $pdb->{COREATOMSTOT} = undef;
-        
+
         # Variables for labeling the residues to assist freeze flag setup
         $pdb->{RESIDUEIDLIST} = [];
         $pdb->{RESIDUENAMELIST} = [];
@@ -113,7 +113,7 @@ sub new {
 
         # Calculation levels of each atom
         $pdb->{CALCLEVEL} = []; # NATOMS
-        
+
         # Bond Conection
         $pdb->{BOND1} = []; # NBONDS
         $pdb->{BOND2} = []; # NBONDS
@@ -196,10 +196,10 @@ $amberffdum  = ESPT::AMBERFF->new();
 if ( $pdb->{RESIDFILE} eq "THERE_IS_NO_CORE_RESIDUE_SET_HERE") {
   print "\nNo core residues list provided. All atom are free to move (0) during geometry optimization.\n"  if $debug >= 0;
   $pdb->{CORESET} = 0;
- } else { 
+ } else {
   print "\nCore residues list file $pdb->{RESIDFILE} provided.\n" if $debug >= 0;
   print "All residues within $pdb->{NEAR} angstroms from core region are free to move (0) during geometry optimization.\n"  if $debug >= 0;
-  $pdb->{CORESET} = 1; 
+  $pdb->{CORESET} = 1;
  }
 
 # if core residues set up, the read in list of residues numbers in the core
@@ -211,28 +211,28 @@ if ( $pdb->{CORESET} == 1 ){
  $coreresindex = 0;
 
  while (<CORERESFILE>) {
- 
+
   next if /^$/;
   /\[(.+)\]\s+"(.+)"/;
   $pdb->{CORERESIDUENAME}[$coreresindex] = $1;
   $pdb->{CORERESIDUE}[$coreresindex] = $2;
-  
+
   $curcoreresid = $pdb->{CORERESIDUE}[$coreresindex];
   $curcoreresname = $pdb->{CORERESIDUENAME}[$coreresindex];
   $coreresindex++;
 
   print "\nRead in residue number $coreresindex with residue name as ($curcoreresname) residue number as ($curcoreresid) \n" if $debug >= 1;
-    
+
   } # while (<CORERESFILE>) {
 
 
   $pdb->{CORERESIDUENO} = $coreresindex;
-  
+
   if ( $coreresindex == 0) {
    print "\nThere is no residue number found in file $pdb->{RESIDFILE}, please double check.\n";
    die;
    }
- 
+
   print "\nThere are $coreresindex residues in the core region. \n" if $debug >= 1;
 
  } # if ( $pdb->{CORESET} == 1 )
@@ -244,7 +244,7 @@ print "\nOpen $pdb->{FILENAME} file for process.\n" if $debug >= 1;
 open(PDBFILE,$pdb->{FILENAME}) || die "Could not read $pdb->{FILENAME}\n$!\n";
 
 # set atom and residues counters as 0
-$counter = 0; 
+$counter = 0;
 $resindex = -1;
 
 # Process PDB file for ONIOM input file
@@ -267,10 +267,10 @@ while (<PDBFILE>) {
          $curatomname =~ s/^([0-9])(\S+)/$2$1/;
          print "\nNew atom name $curatomname to meet AMBER standard name.\n" if $debug >= 1;
          }
-         
-       
 
-     } else { 
+
+
+     } else {
 #       /^HETATM\s+\d+\s+(\S+)\s+(\S{3})\s+(.{6})\s+(-?\d+.\d+)\s+(-?\d+.\d+)\s+(-?\d+.\d+)\s+/;
        /^HETATM\s+\d+\s+(\S+)\s+(\S+)\s+(\d+)\s+(-?\d+.\d+)\s+(-?\d+.\d+)\s+(-?\d+.\d+)\s+/;
 #       print "Atom is $1, residue is $2, Coordinates are $3, $4, $5,\n" if $debug >= 1;
@@ -280,8 +280,8 @@ while (<PDBFILE>) {
        $curX = $4;
        $curY = $5;
        $curZ = $6;
-     } #  } else { 
-     
+     } #  } else {
+
      if ( ( $amberffdum->existsresidue($curresidname)) ) {
        # Look up atom type and partial charges for current atom
        $curatmtyp = $amberffdum->atomtype($curresidname,$curatomname);
@@ -297,7 +297,7 @@ while (<PDBFILE>) {
         $atomdefined = 0;
         $curelenum = 1;
        } #else
-     
+
 #     print "Current atom has atom type $curatmtyp, element number $curelenum, partial charge $curparchg.\n";
 #     print "Current residue number is $curresidnum\n";
 
@@ -319,7 +319,7 @@ while (<PDBFILE>) {
        }
 
      $pdb->{ELEMENTNUM}[$counter] = $curelenum;
-     
+
      if ($pdb->{CORESET} == 1) {
          $pdb->{ATOMFREEZEFLAG}[$counter] = -1;
         } else {
@@ -338,12 +338,12 @@ while (<PDBFILE>) {
      $pdb->{ATOMINRESIDUE}[$counter] = $resindex;
 
      $counter++;
-     
-     #Check if encounter a new residue, if yes, store residue number and name. 
-     
+
+     #Check if encounter a new residue, if yes, store residue number and name.
+
      if ( ($residref eq $curresidnum) and ( $resnameref eq $curresidname) )
       { next; }
-     
+
      $resindex++;
      $pdb->{RESIDUEIDLIST}[$resindex] = $curresidnum;
      $pdb->{RESIDUENAMELIST}[$resindex] = $curresidname;
@@ -352,14 +352,14 @@ while (<PDBFILE>) {
      $resnameref = $curresidname;
      $pdb->{ATOMINRESIDUE}[$counter-1] = $resindex;
      print "\nEncounter new residue $resindex, name $curresidname, index $curresidnum.\n" if $debug >= 2;
-  
-   } # if (/^ATOM\s+\d+/ or /^HETATM\s+\d+/) 
-  
+
+   } # if (/^ATOM\s+\d+/ or /^HETATM\s+\d+/)
+
  } #  while (<PDBFILE>) {
 
  $resindex++;
  print "\nThere are $resindex residues in the PDB file.\n" if $debug >= 0;
- $pdb->{TOTALRESIDUENUM} =$resindex; 
+ $pdb->{TOTALRESIDUENUM} =$resindex;
  $pdb->{NATOMS} = $counter ;
 
 # M.Yamada
@@ -369,10 +369,10 @@ if ( $pdb->{TOPEXIST} == 1 ) {
  open(TOPFILE,$pdb->{TOPFILENAME}) || die "Could not read $pdb->{TOPFILENAME}\n$!\n";
 
  # set 0
- $atomcounter = 0; 
- $bondcounter = 0; 
-# $moltypecounter = -1; 
-# $topread = "mol"; 
+ $atomcounter = 0;
+ $bondcounter = 0;
+# $moltypecounter = -1;
+# $topread = "mol";
 
  # Process TOP file for ONIOM input file
  while (<TOPFILE>) {
@@ -386,7 +386,7 @@ if ( $pdb->{TOPEXIST} == 1 ) {
    }
    if ( /\[\s*atoms\s*\]/ and $topread eq "atom" ) {
      $topread = "atoms";
-#     $moltypecounter++; 
+#     $moltypecounter++;
      next;
    }
 #   if ( /^\s*(\d+)\s+\S+\s+\d+\s+(\S+)\s+(\S+)\s+/ and $topread == "atoms" ) {
@@ -402,10 +402,10 @@ if ( $pdb->{TOPEXIST} == 1 ) {
    if ( /^\s*(\d+)\s+(\d+)\s+\.*/ and $topread eq "bonds" ) {
      $pdb->{BOND1}[$bondcounter] = $1;
      $pdb->{BOND2}[$bondcounter] = $2;
-     $bondcounter++; 
+     $bondcounter++;
      next;
    }
-  
+
  } #  while (<TOPFILE>) {
  $pdb->{NBONDS} = $bondcounter;
 
@@ -414,29 +414,29 @@ if ( $pdb->{TOPEXIST} == 1 ) {
 
  # If there is no core residues list provided, no need to set freeze flag
  if ($pdb->{CORESET} == 0) { return; }
- 
+
  # Find list of atoms which belong to core region
  $coreatomindex = 0;
  for ($i=0; $i < $pdb->{NATOMS};$i++) {
-   
+
    if ( $pdb->atombelong2core($i) == 0) {
      $pdb->{CALCLEVEL}[$i] = "L"; # M.Yamada
      next;
    }
-    
+
    $pdb->{COREATOMSID}[$coreatomindex] = $i;
    $pdb->{CALCLEVEL}[$i] = "H"; # M.Yamada
    $coreatomindex++;
    print "\nAtom $i (in residue $pdb->{RESIDUE}[$i] $pdb->{RESIDUENUM}[$i]) belongs to core region.\n" if $debug >= 2;
- 
+
   } # for (my $i=0; $i < $pdb->{NATOMS};$i++)
- 
+
  $pdb->{COREATOMSTOT} = $coreatomindex;
  print "\nThere are total $coreatomindex atoms in the core region.\n" if $debug >= 1;
- 
+
  $pdb->decideflag();
 
-} # sub digest 
+} # sub digest
 
 #Subroutine that decides the freeze flag of each atom according to its distance
 # to core residues.
@@ -448,26 +448,26 @@ sub decideflag {
  my $debug = $pdb->{DEBUG};
  my $totresiduewithin = 0;
  my $frzbackboneatoms = 0;
- 
- 
+
+
  #  Check if core residues are set
  if ( $pdb->{CORESET} == 0 )
   { return;}
 
  # go through all the atoms to check if each residue are within certain distance of core or not.
  for (my $i=0; $i < $pdb->{NATOMS};$i++) {
-   
+
    if ($pdb->{RESIDUEWITHINCORE}[$pdb->{ATOMINRESIDUE}[$i]] == 1) {next;}
-   
+
    if ( $pdb->atomwithincore($i) == 1) {
      $pdb->{RESIDUEWITHINCORE}[$pdb->{ATOMINRESIDUE}[$i]] = 1;
      $curresidue = $pdb->{ATOMINRESIDUE}[$i];
      $totresiduewithin++;
      print "\nResidue ($curresidue) is close to core region.\n" if $debug >= 2;
-     
+
     }
-   
-   
+
+
   } # for (my $i=0; $i < $pdb->{NATOMS};$i++)
 
  print "\nThere are $totresiduewithin residues close to core region (including those residues in the core region). \n" if $debug >= 1;
@@ -476,34 +476,34 @@ sub decideflag {
 
  # go through all the atoms to setup freeze flag.
  for (my $i=0; $i < $pdb->{NATOMS};$i++) {
-  
+
    if ($pdb->{RESIDUEWITHINCORE}[$pdb->{ATOMINRESIDUE}[$i]] == 0) {next;}
-   
+
    # If this atom belongs to core region, it is free to move.
    if ( $pdb->atombelong2core($i) == 1 ) {
     $pdb->{ATOMFREEZEFLAG}[$i] = 0;
     next;
     }
-   
+
    # If this atom belongs to a residue that is within core, it is free to move.
-   
+
    if ($pdb->{RESIDUEWITHINCORE}[$pdb->{ATOMINRESIDUE}[$i]] == 1){
       $pdb->{ATOMFREEZEFLAG}[$i] = 0;
       next;
     }
-   
+
   }# for (my $i=0; $i < $pdb->{NATOMS};$i++)
-  
+
 # print "\nThere are $frzbackboneatoms backbone atoms that are frozen, but in residue close to core region.\n" if $debug >= 1;
- 
-} # sub decideflag 
+
+} # sub decideflag
 
 # Subroutine  isbackbone: Check if this atom is backbone atom or not.
 sub isbackbone{
  my $pdb = shift;
  my $atomid = shift;
  my $debug = $pdb->{DEBUG};
- 
+
  if ($pdb->{ATOMTYPE}[$atomid] eq "C") {return 1;}
  if ($pdb->{ATOMTYPE}[$atomid] eq "O") {return 1;}
  if ($pdb->{ATOMTYPE}[$atomid] eq "N") {return 1;}
@@ -529,18 +529,18 @@ sub atomwithincore{
    $curcoreatom = $pdb->{COREATOMSID}[$i];
    $distance = $pdb->atomdistance($atomid,$curcoreatom);
    if ( $distance < $pdb->{NEAR}) {
-   
+
       print "\nAtom $atomid is at least $distance A to core region. \n" if  $debug >= 2;
       return 1;
-     } 
-   
- 
+     }
+
+
   } # for (my $i=0; $i < $pdb->{NATOMS};$i++)
 
  print "\nAtom $atomid is NOT close to core region. \n" if  $debug >= 2;
 
  return 0;
- 
+
 } # sub atomwithincore
 
 
@@ -552,9 +552,9 @@ sub atomdistance{
  my $atomid1 = shift;
  my $atomid2 = shift;
  my $distance;
- 
- $distance = sqrt( ( $pdb->{CARTCOORD}[3*$atomid1] - $pdb->{CARTCOORD}[3*$atomid2] )**2 + 
-                   ( $pdb->{CARTCOORD}[3*$atomid1+1] - $pdb->{CARTCOORD}[3*$atomid2+1] )**2 + 
+
+ $distance = sqrt( ( $pdb->{CARTCOORD}[3*$atomid1] - $pdb->{CARTCOORD}[3*$atomid2] )**2 +
+                   ( $pdb->{CARTCOORD}[3*$atomid1+1] - $pdb->{CARTCOORD}[3*$atomid2+1] )**2 +
                    ( $pdb->{CARTCOORD}[3*$atomid1+2] - $pdb->{CARTCOORD}[3*$atomid2+2] )**2  );
  return $distance;
 
@@ -567,35 +567,35 @@ sub atombelong2core{
  my $pdb = shift;
  my $atomid = shift;
  my $debug = $pdb->{DEBUG};
- 
+
  my $oriname = $pdb->{RESIDUE}[$atomid];
  my $oriid = $pdb->{RESIDUENUM}[$atomid];
  my $curname;
  my $curid;
- 
- 
+
+
  for (my $j=0; $j < $pdb->{CORERESIDUENO}; $j++) {
    $curname  = $pdb->{CORERESIDUENAME}[$j];
    $curid    = $pdb->{CORERESIDUE}[$j];
-   
+
    print "\nCompare (".$oriname.") with (".$curname.") and (".
                     $oriid.") with (".$curid.")\n" if $debug >= 2;
 
-   if ( (($oriname =~ /$curname/) or ($curname =~ /$oriname/)) and 
-        (($oriid =~ /$curid/) and ($curid =~ /$oriid/)) ){ 
+   if ( (($oriname =~ /$curname/) or ($curname =~ /$oriname/)) and
+        (($oriid =~ /$curid/) and ($curid =~ /$oriid/)) ){
           print "\nMatch (".$oriname.") with (".$curname.") and (".
                     $oriid.") with (".$curid.")\n" if $debug >= 2;
           return 1;
         }
   }
- 
+
  return 0;
 
 } # sub atombelong2core
 
 # Subroutine writeoniom:  write to output files
 sub writeoniom {
- 
+
  my $pdb = shift;
  my $filename = shift;
  my $debug = $pdb->{DEBUG};
@@ -603,11 +603,11 @@ sub writeoniom {
  my $currfrozenflag;
  my $modellevel; # M.Yamada
  my $bondcounter = 0; # M.Yamada
-  
- print "\nWrite ONIOM input file $filename from PDB file.\n" if $debug >= 0; 
- 
+
+ print "\nWrite ONIOM input file $filename from PDB file.\n" if $debug >= 0;
+
  $oniompdb = join "", $filename, ".onb";
- 
+
  open(ONIOMPDBFILE, ">$oniompdb") || die "Could not create $oniompdb\n$!\n";
 
  # Open output file
@@ -616,10 +616,10 @@ sub writeoniom {
  print "\nOpening file ", $filename, " for output ...\n" if $debug >= 0;
 
  # % commands
- print ONIOMGJFFILE "%chk=$filename.chk\n%mem=3700MB\n%nprocshared=4\n\n";
+ print ONIOMGJFFILE "%chk=$filename.chk\n%mem=60GB\n%nprocshared=16\n\n";
 
  # Route
- print ONIOMGJFFILE "#P ONIOM(B3LYP/6-31G(d):AMBER=HardFirst) geom=connectivity nosymm iop(2/15=3) test\n\n";
+ print ONIOMGJFFILE "#p oniom(b3lyp/6-31+g(d,p):amber=softfirst) geom=connectivity nosymm iop(2/15=3)\n\n";
  if ( $pdb->{TOPEXIST} == 0 ) {
    print ONIOMGJFFILE "ONIOM inputfile generated by pdb2oniom from PDB file $pdb->{FILENAME}. No connectivity generated.\n";
    print ONIOMGJFFILE "Please use GaussView read $filename, and generate connectivity information.\n\n";
@@ -627,14 +627,14 @@ sub writeoniom {
    print ONIOMGJFFILE "ONIOM inputfile generated by pdb2oniom from PDB file $pdb->{FILENAME} and TOP file $pdb->{TOPFILENAME}.\n\n";
  }
  print ONIOMGJFFILE "0 1 0 1 0 1\n";
- 
+
 # print "Notice: For ONIOM calculation with protein, you may need connectivity information. \n";
 # print "Notice: However, this program cannot generate those information. \n";
 # print "Notice: You may use GaussView to read in original PDB file, and generate those information separately. \n";
 # print "Notice: After you have connectivity information, you can copy them to appropriate place in Gaussian input file. \n";
- 
 
- 
+
+
  for (my $i=0; $i < $pdb->{NATOMS};$i++) {
    $currfrozenflag = $pdb->{ATOMFREEZEFLAG}[$i];
    $modellevel = $pdb->{CALCLEVEL}[$i]; # M.Yamada
@@ -643,11 +643,11 @@ sub writeoniom {
    if ( $pdb->{ATOMDEFINE}[$i] == 1 ) {
      printf ONIOMGJFFILE " %s-%s-%.6f\t %2d  %15.7f %15.7f %15.7f   %s\n", $pdb->{ELEMENT}[$i],$pdb->{ATOMTYPE}[$i],
              $pdb->{PARTIALCHARG}[$i],$currfrozenflag,$pdb->{CARTCOORD}[3*$i], $pdb->{CARTCOORD}[3*$i+1], $pdb->{CARTCOORD}[3*$i+2],$modellevel;
-             
+
      printf ONIOMPDBFILE " %s-%s-%.6f\t %2d  %15.7f %15.7f %15.7f   %s %6s %5s %7s\n", $pdb->{ELEMENT}[$i],$pdb->{ATOMTYPE}[$i],
              $pdb->{PARTIALCHARG}[$i],$currfrozenflag,$pdb->{CARTCOORD}[3*$i], $pdb->{CARTCOORD}[3*$i+1], $pdb->{CARTCOORD}[3*$i+2],$modellevel,
              $pdb->{ATOMS}[$i], $pdb->{RESIDUE}[$i],$pdb->{RESIDUENUM}[$i];
-             
+
    } else {
      printf ONIOMGJFFILE " %s-%s-%.6f\t %2d  %15.7f %15.7f %15.7f   %s\n", $pdb->{ATOMS}[$i],$pdb->{ATOMTYPE}[$i],
              $pdb->{PARTIALCHARG}[$i],$currfrozenflag,$pdb->{CARTCOORD}[3*$i], $pdb->{CARTCOORD}[3*$i+1], $pdb->{CARTCOORD}[3*$i+2],$modellevel;
@@ -666,7 +666,7 @@ sub writeoniom {
        last if $bondcounter >= $pdb->{NBONDS};
        if ( $pdb->{BOND1}[$bondcounter] == $i+1 ) {
          printf ONIOMGJFFILE " %d 1.0", $pdb->{BOND2}[$bondcounter];
-         $bondcounter++; 
+         $bondcounter++;
          next;
        } else {
          last;
@@ -695,19 +695,19 @@ sub writepdb {
  my $debug = $pdb->{DEBUG};
  my $totalatom = 0;
 
- print "\nWrite PDB file $filename.\n" if $debug >= 0; 
- 
+ print "\nWrite PDB file $filename.\n" if $debug >= 0;
+
  open(NEWPDBFILE, ">$filename") || die "Could not create $filename\n$!\n";
- 
+
  for (my $i=0; $i < $pdb->{NATOMS};$i++) {
-   
+
    # Skip if this residue is not close to core enough.
    if ($pdb->{RESIDUEWITHINCORE}[$pdb->{ATOMINRESIDUE}[$i]] == 0) {next;}
    $totalatom++;
-   print NEWPDBFILE $pdb->{ORIGINALLINE}[$i]; 
-  
-  } 
- 
+   print NEWPDBFILE $pdb->{ORIGINALLINE}[$i];
+
+  }
+
  print "\nThere are $pdb->{RESIDUENEARCORE} residues and $totalatom atoms in output file $filename.\n" if $debug >= 1;
 
 } # sub writepdb
