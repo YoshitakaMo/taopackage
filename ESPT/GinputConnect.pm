@@ -173,7 +173,7 @@ $ConnetTableIndicator = 0;
 #     printf "%d10\n",$atomindex;
 #     if ( /^\s*[a-zA-Z\-]+\d+\.\d+\s+-*[01]\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+H/ ) {
 #  If the atom is QM region (or allowed to move when -g is turned on), select this atoms.
-     if ( /^\s*([a-zA-Z]+)-([a-zA-Z0-9\*]+)-(-*\d+\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HLMhlm])/)
+     if ( /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d+\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HLMhlm])/)
       {
        $isONIOM = 1;
        
@@ -202,7 +202,7 @@ $ConnetTableIndicator = 0;
 
       # If this is a link atom
 
-      if (/^\s*[a-zA-Z]+-[a-zA-Z0-9\*]+--*\d+\.\d+\s+-*[01]\s+-*\d+\.\d+\s+-*\d+\.\d+\s+-*\d+\.\d+\s+[HLMhlm]\s+([a-zA-Z]-\S+)\s+(\d+)/) {
+      if (/^\s*[a-zA-Z]+-[a-zA-Z0-9\+\*]+--*\d+\.\d+\s+-*[01]\s+-*\d+\.\d+\s+-*\d+\.\d+\s+-*\d+\.\d+\s+[HLMhlm]\s+([a-zA-Z]-\S+)\s+(\d+)/) {
          $ginputconnect->{ISLINKATOM}[$atomindex] = 1;
          $ginputconnect->{LINKATOMINFO}[$atomindex] = $1; 
          $ginputconnect->{LINKEDATOMNUM}[$atomindex] = $1; 

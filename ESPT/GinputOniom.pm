@@ -152,7 +152,7 @@ $atomindex = 0;
 #     printf "%d10\n",$atomindex;
 #     if ( /^\s+[a-zA-Z\-]+\d+\.\d+\s+-*[01]\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+H/ ) {
 #  If the atom is QM region (or allowed to move when -g is turned on), select this atoms.
-     if ( /^\s+([a-zA-Z]{1,})-([a-zA-Z0-9\*]{1,})-(-*\d+\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HLMhlm])/)
+     if ( /^\s+([a-zA-Z]{1,})-([a-zA-Z0-9\+\*]{1,})-(-*\d+\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HLMhlm])/)
       {
 #      print $_;
 
@@ -179,7 +179,7 @@ $atomindex = 0;
 
       # If this is a link atom
 
-      if (/^\s+[a-zA-Z]{1,2}-[a-zA-Z0-9]{1,2}--*\d+\.\d+\s+-*[01]\s+-*\d+\.\d+\s+-*\d+\.\d+\s+-*\d+\.\d+\s+[HLMhlm]\s+([a-zA-Z]-\S+)\s+(\d+)/) {
+      if (/^\s+[a-zA-Z]{1,2}-[a-zA-Z0-9\+]{1,2}--*\d+\.\d+\s+-*[01]\s+-*\d+\.\d+\s+-*\d+\.\d+\s+-*\d+\.\d+\s+[HLMhlm]\s+([a-zA-Z]-\S+)\s+(\d+)/) {
          $ginputoniom->{ISLINKATOM}[$atomindex] = 1;
          $ginputoniom->{LINKATOMINFO}[$atomindex] = $1;
          $ginputoniom->{LINKEDATOMNUM}[$atomindex] = $1;

@@ -605,7 +605,7 @@ sub modeone {
             $oniomresp->{Original_Line}[$i] = $_ ;
             print $_ if $debug >= 6;
 
-             if (/\s*([a-zA-Z]+)-([a-zA-Z0-9\*]+)-(-*\d*.\d*)\s+(-*\d)\s+-*\d*\.\d*\s+-*\d*\.\d*\s+-*\d*\.\d*\s+([HMLhml])\s*$/)
+             if (/\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*.\d*)\s+(-*\d)\s+-*\d*\.\d*\s+-*\d*\.\d*\s+-*\d*\.\d*\s+([HMLhml])\s*$/)
               { #M1NO5
 
                # If no link atom info in current atom
@@ -622,7 +622,7 @@ sub modeone {
                $oniomresp->{LinkedAtomNum}[$i]       = undef;
 
               }  elsif  #M1NO5
-               (/\s*([a-zA-Z]+)-([a-zA-Z0-9\*]+)-(-*\d*.\d*)\s+(-*\d)\s+-*\d*\.\d*\s+-*\d*\.\d*\s+-*\d*\.\d*\s+([HMLhml])\s*([a-zA-Z]+)-([a-zA-Z0-9\*]+)\s+(\d+)/)
+               (/\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*.\d*)\s+(-*\d)\s+-*\d*\.\d*\s+-*\d*\.\d*\s+-*\d*\.\d*\s+([HMLhml])\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)\s+(\d+)/)
                 # With link atom info
                 # e.g. C-CT--0.122638       0     50.42455   35.15176   58.6587  L    H-H4     4447  0.        0.
                { #M1NO6
@@ -1615,7 +1615,7 @@ sub modethree {
          $oniomresp->{Original_Line}[$atomindex] = $_;
 
          #  Read in each atom information
-         /^\s*([a-zA-Z]+)-([a-zA-Z0-9\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HML])/;
+         /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HML])/;
 
          print "$1\t$2\t$3\t$4\t$5\t$6\t$7\t$8\t$atomindex\n" if $debug >= 5;
          $oniomresp->{ATOMSGfile}[$atomindex]          = $1;
