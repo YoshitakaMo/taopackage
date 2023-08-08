@@ -301,7 +301,7 @@ while (<PDBFILE>) {
      
       $pdbcrd2oniom->{ONIOM_ORIGINALLINE}[$atomindex] = $_;
  #  Read in each atom information
-      /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HMLhml])/;
+      /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+([HMLhml])/;
       
        print "$1\t$2\t$3\t$4\t$5\t$6\t$7\t$8\t$atomindex\n" if $debug >= 3; 
        $pdbcrd2oniom->{ONIOM_ATOMS}[$atomindex] = $1;

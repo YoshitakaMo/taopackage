@@ -309,7 +309,7 @@ if ($isJobFile == 1) {
      
       $oniomtopdb->{ONIOM_ORIGINALLINE}[$atomindex] = $_;
  #  Read in each atom information
-      /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HML])/;
+      /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+([HML])/;
       
        print "$1\t$2\t$3\t$4\t$5\t$6\t$7\t$8\t$atomindex\n" if $debug >= 3; 
        $oniomtopdb->{ONIOM_ATOMS}[$atomindex] = $1;

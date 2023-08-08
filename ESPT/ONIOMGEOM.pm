@@ -217,7 +217,7 @@ while (<MODELGJFFILE>) {  #NO1
      
      $oniom->{ORIGINALLINEModelGjf}[$atomindex] = $_;
 #  Read in each atom information
-     /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HMLhml])/;
+     /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+([HMLhml])/;
       
       print "$1\t$2\t$3\t$4\t$5\t$6\t$7\t$8\t$atomindex\n" if $debug >= 3; 
       $oniom->{ATOMSModelGjf}[$atomindex] = $1;
@@ -272,7 +272,7 @@ while (<PRODGJFFILE>) {  #NO1
      
      $oniom->{ORIGINALLINEProdGjf}[$atomindex] = $_;
 #  Read in each atom information
-     /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HMLhml])/;
+     /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+([HMLhml])/;
       
       print "$1\t$2\t$3\t$4\t$5\t$6\t$7\t$8\t$atomindex\n" if $debug >= 3; 
       $oniom->{ATOMSProdGjf}[$atomindex] = $1;
@@ -317,7 +317,7 @@ while (<MODELONBFILE>) {
      
      $oniom->{ORIGINALLINEModelONB}[$atomindex] = $_;
 #  Read in each atom information
-     /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HML])\s+(\S+)\s+(\S+)\s+(\d+)/;
+     /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+([HML])\s+(\S+)\s+(\S+)\s+(\d+)/;
       
       print "$1\t$2\t$3\t$4\t$5\t$6\t$7\t$8\t$9\t$10\t$11\t$atomindex\n" if $debug >= 3; 
       $oniom->{ATOMSModelONB}[$atomindex] = $1;
@@ -365,7 +365,7 @@ while (<PRODONBFILE>) {
      
      $oniom->{ORIGINALLINEProdONB}[$atomindex] = $_;
 #  Read in each atom information
-     /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+([HML])\s+(\S+)\s+(\S+)\s+(\d+)/;
+     /^\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*\.\d+)\s+(-*[01])\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+(-*\d+\.\d*)\s+([HML])\s+(\S+)\s+(\S+)\s+(\d+)/;
       
       print "$1\t$2\t$3\t$4\t$5\t$6\t$7\t$8\t$9\t$10\t$11\t$atomindex\n" if $debug >= 3; 
       $oniom->{ATOMSProdONB}[$atomindex] = $1;
