@@ -206,7 +206,7 @@ while ($templine = <GOUTFILE>) {
       $line2 = <GOUTFILE>;
       
     
-      $line1 =~ /\s*([a-zA-Z]+)-([a-zA-Z0-9\*]+)-(-*\d*.\d*)\s+-*\d\s+(-*\d*\.\d*)\s+(-*\d*\.\d*)\s+(-*\d*\.\d*)\s+([HMLhml])/;
+      $line1 =~ /\s*([a-zA-Z]+)-([a-zA-Z0-9\+\*]+)-(-*\d*.\d*)\s+-*\d\s+(-*\d*\.\d*)\s+(-*\d*\.\d*)\s+(-*\d*\.\d*)\s+([HMLhml])/;
       $goutoniom->{ATOMLIST}[$counter] = $1;
       $goutoniom->{ATOMTYPE}[$counter] = $2;
       $goutoniom->{LAYERLIST}[$counter] = $7;
@@ -225,7 +225,7 @@ while ($templine = <GOUTFILE>) {
       
       # If this is a link atom
 
-      if ($line1 =~ /\s*[a-zA-Z]+-[a-zA-Z0-9\*]+--*\d*.\d*\s+-*\d\s+-*\d*\.\d*\s+-*\d*\.\d*\s+-*\d*\.\d*\s+[HMLhml]\s+([a-zA-Z])-(\S+)/) {
+      if ($line1 =~ /\s*[a-zA-Z]+-[a-zA-Z0-9\+\*]+--*\d*.\d*\s+-*\d\s+-*\d*\.\d*\s+-*\d*\.\d*\s+-*\d*\.\d*\s+[HMLhml]\s+([a-zA-Z])-(\S+)/) {
          $goutoniom->{ISLINKATOM}[$counter] = 1;
          $goutoniom->{LINKATOMTYPE}[$counter] = $2;
          print " Atom number $counter is a link atom ($1), and has type ($2).\n" if $debug >= 1;
